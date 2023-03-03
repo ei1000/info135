@@ -87,57 +87,65 @@ print(result_freq)
 
 #5
 '''
-My plan to solve this task recursivly is to use combinatorics. If a word is 5 letters long, then it has 5! different permutations.
+My plan to solve this task recursivly is to use backtracking. If a word is 5 letters long, then it has 5! unique permutations.
 The first pass appends 5 permutations, the next 4 and so on.
 This creates a tree structure where the combinations becomes smaller and smaller untill the base case.
+
+My plan is to take out the first letter of the string, keep the rest of the letters in their positions(the stems), and place the letter in all possible positions in the stems.
+
+For example 'abc' -> 'a' and 'bc', 'cb' -> 'abc', 'bac', 'bca', 'acb', 'cab', 'cba'
+
+I used this video to get a better understanding: https://www.youtube.com/watch?v=4lIQCoG4MnY
 '''
 
+#Hardcode example off how the process works on a 3 letter word.
+def permutations_abc(string):
+    combinations = []
 
-def magic_function(string):
-    string = [*string]
-    lenght = len(string)
-    permutations = []
-
-    #base case, returns a copy of the last letter.
-    if lenght == 1:
+    if len(string) == 1:
         return [string]
     
-    #Recursive call
+    for char in string:
+        string = string[:]
+        trunk = string.replace(char, "", 1)
+        
+        if char + trunk[:2] not in combinations:
+            combinations.append(char + trunk[:2])
+        if trunk[1:] + char + trunk[:1] not in combinations:
+            combinations.append(trunk[1:] + char + trunk[:1])
+        if (trunk[:2] + char) not in combinations:
+            combinations.append(trunk[:2] + char)
+    
+    return combinations
 
-    for num in range(lenght):
-        char = string.pop(0)
-
-        perms = magic_function(string)
-
-        for perm in perms:
-            perm.append(char)
-        permutations.extend(perms)
-        string.append(char)
-    return permutations
+#The magic function that finds permutations
 
 def magic_function(string):
-    string = [*string]
-    lenght = len(string)
-    permutations = []
-
-    #base case, returns a copy of the last letter.
-    if lenght == 1:
+    
+    #Base case, if the lenght of the string is 1, then return the string in a list, which is the letter.
+    if len(string) == 1:
         return [string]
     
-    #Recursive call
+    #Sets the bottom_stem to a base case. If the string is 'abc', then bottom_stem would be 'c'.
+    permutations = []
+    stems = magic_function(string[1:])
+    letter = string[0]
+    
+    #Iterates through the characters in the stems. The it takes the index in a range based on the lenght of the stem and adds 1. The index can be 0,1,2.
+    for stem in stems:
+        for ind in range(len(stem)+1):
+            permutations.append(stem[:ind] + letter + stem[ind:])
 
-    for num in range(lenght):
-        char = string.pop(0)
-
-        perms = magic_function(string)
-
-        for perm in perms:
-            perm.append(char)
-        permutations.extend(perms)
-        string.append(char)
     return permutations
 
+'''
+The firt stem becomes 'c', and letter becomes 'b', it then creates the permutations 'cb' and 'bc'.
+Then stems is equal to the permutations ['cb', 'bc'], and the letter is 'a'. 
+It then goes throug the double loop and creates 3 permutations from 'cb' with 'a', and the same with 'bc'
+Then it returns the permutations
+'''
+            
     
 
-permutations = magic_function('abcd')
+permutations = magic_function('abc')
 print(permutations)
