@@ -42,8 +42,9 @@ list_of_tuples = [('lalalal', 5), ('abc', 2), ('bce', 3)]
 def insertion_sort(list):
     for x in range(1, len(list)):
         key = list[x]
+        key_value = list[x][1]
         y = x - 1
-        while y >= 0 and key > list[y]:
+        while y >= 0 and key_value > list[y]:
             list[y+1] = list[y]
             y -= 1
             list[y + 1] = key
