@@ -173,32 +173,30 @@ class BinarySearchTree:
         else:
             return self.left_child.in_order() + [self.value] + self.right_child.in_order()
     
-    #If i use the in_order method, and pythons in build functions
-
+    #Taking inspiration from the in_order method.    
     def compute_sum(self):
-        in_order = self.in_order()
-        return sum(in_order)
+        #Base case, there is no value on the lowest child.
+        if self.is_empty():
+            return 0
+        
+        #Recursion part, for every node, take the value and add the left value and right value.
+        else:
+            return self.left_child.compute_sum() + self.value + self.right_child.compute_sum()
+        
 
     def compute_count(self):
         in_order = self.in_order()
         return len(in_order)
     
-    #My own implementation. This is quite similar to the fibonacci calculation. 
-    def compute_sum(self, tree = None):
-        left = tree.left_child
-        right = tree.right_child
-        if left == None and right == None:
-            return 0
-        else:
-            return self.compute_sum(left) + tree.value + self.compute_sum(right)
-    
-    def compute_count(self, tree=None):
-        left = tree.left_child
-        right = tree.right_child
-        if left == None and right == None:
+    def compute_count(self):
+        #Base case, there are no more children
+        if self.is_empty():
             return []
+        #Recursive part, take the lenght of the list of nodes on the left and right. 
         else:
-            return self.compute_sum(left) + [tree.value] + self.compute_sum(right)
+            return len(self.left_child.in_order() + [self.value] + self.right_child.in_order())
+    
+    
 
 
     def print_tree(self):
@@ -211,5 +209,5 @@ my_tree.insert(4)
 my_tree.insert(6)
 my_tree.insert(8)
 my_tree.insert(10)
-print('sum:', my_tree.compute_sum(my_tree))
-print('number of nodes:', my_tree.compute_count(my_tree))
+print('sum:', my_tree.compute_sum())
+print('number of nodes:', my_tree.compute_count())
