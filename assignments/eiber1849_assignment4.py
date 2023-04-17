@@ -171,13 +171,13 @@ class Graph:
                 elif neighbour in state and state[neighbour] == 'Not_visited':
                     return dfs(neighbour, state)
 
+        if node not in self.graph.keys():
+            return "Starting on bottom node, no cycle!"
 
-
-        if dfs(node, state) == 1:
+        elif dfs(node, state) == 1:
             return 'Cycle found!'
         else:
-            return 'No cycle found :('
-            
+            return 'No cycle found'
 
     def print_graph(self):
         print(self.graph)
@@ -199,21 +199,23 @@ If it encounters an already visited node, than a cycle has been found.
 '''
 
 def find_cycle(self, node):
-    state = {node: 'Not_visited' for node in self.graph.keys()}
-    cycle = 0
-    def dfs(node, state):
-        global cycle
-        state[node] = 'Visited'
-        for neighbour in self.graph[node]:
-            if neighbour in state and state[neighbour] == 'Not_visited':
-                dfs(neighbour, state)
-            elif neighbour in state and state[neighbour] == 'Visited':
-                cycle = 1
-        state[node] = 'bottom'
-            
+        state = {node: 'Not_visited' for node in self.graph.keys()}
         
-    dfs(node, state)
-    return cycle
+        def dfs(node, state):
+            state[node] = 'Visited'
+            for neighbour in self.graph[node]:
+                if neighbour in state and state[neighbour] == 'Visited':
+                    return 1
+                elif neighbour in state and state[neighbour] == 'Not_visited':
+                    return dfs(neighbour, state)
+
+        if node not in self.graph.keys():
+            return "Starting on bottom node, no cycle!"
+
+        elif dfs(node, state) == 1:
+            return 'Cycle found!'
+        else:
+            return 'No cycle found'
 
 my_graph = Graph()
 my_graph.add_edge('A', 'B')
@@ -227,7 +229,7 @@ my_graph.add_edge('E', 'G')
 my_graph.add_edge('F', 'H')
 my_graph.add_edge('G', 'I')
 my_graph.print_graph()
-result = my_graph.find_cycle('A')
+result = my_graph.find_cycle('J')
 print(result)
 
 #4
@@ -253,8 +255,8 @@ graph.add_edge('c', 'd')
 graph.add_edge('d', 'e')
 graph.add_edge('e', 'd')
 graph.print_graph()
-result = graph.find_cycle('b')
-print(result)
+#result = graph.find_cycle('b')
+#print(result)
 graph.remove_node('a')
 print('after removal:')
 graph.print_graph()

@@ -138,6 +138,11 @@ def build_my_graph():
 #print(build_my_graph())
 
 #It starts the search, but when it enters c it gets stuck in a cycle. So you get c-e-f-c-e-f-c-e-f etc. And eventually an RecursionError is raised.
+#This is if you implement the search stack with local memory instead of global.
+#If you implement it with global memory, then you counteract the cycles. So you have a form of cycle detection.
+#If you counteract the cycles, then the search will only print the nodes once.
+#Then it will pring all the nodes in the graph, since they all are connected. So [a,b,c,d,e,f,g,h] 
+
 
 #4
 
